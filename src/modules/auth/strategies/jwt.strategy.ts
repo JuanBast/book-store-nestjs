@@ -7,6 +7,7 @@ import { Configuration } from '../../../config/config.keys';
 import { AuthRepository } from '../auth.repository';
 import { IJwtPayload } from '../jwt-payload.interface';
 import { UnauthorizedException, Injectable } from '@nestjs/common';
+import { status } from '../../../shared/entity-status.enum';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -24,7 +25,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   async validate(payload: IJwtPayload) {
     const { username } = payload;
     const user = await this._authRepository.findOne({
-      where: { username, status: 'ACTIVE' },
+      where: { username, status: status.ACTIVE },
     });
 
     if (!user) {
